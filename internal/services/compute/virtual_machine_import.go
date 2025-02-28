@@ -44,9 +44,17 @@ func importVirtualMachine(osType virtualmachines.OperatingSystemTypes, resourceT
 			return []*pluginsdk.ResourceData{}, fmt.Errorf("the %q resource only supports %s Virtual Machines", resourceType, string(osType))
 		}
 
-		// we don't support VM's without an OS Profile / attach
+/* 		// we don't support VM's without an OS Profile / attach
 		if vm.Model.Properties.OsProfile == nil {
 			return []*pluginsdk.ResourceData{}, fmt.Errorf("the %q resource doesn't support attaching OS Disks - please use the `azurerm_virtual_machine` resource instead", resourceType)
+		} */
+
+		if vm.Model.Properties.OsProfile == nil {
+
+			// Log a warning but allow import
+
+			fmt.Printf("Warning: Importing a VM without an OS Profile. OS disk attachment will be required manually.\n")
+
 		}
 
 		hasSshKeys := false
