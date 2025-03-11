@@ -69,7 +69,7 @@ func importVirtualMachine(osType virtualmachines.OperatingSystemTypes, resourceT
 		   		if !hasSshKeys {
 		   			d.Set("admin_password", "ignored-as-imported")
 		   		} */
-
+		// Fixed nil pointer dereference for Linux VM import.
 		hasSshKeys := false
 		if osType == virtualmachines.OperatingSystemTypesLinux {
 			if vm.Model.Properties.OsProfile != nil { // Ensure OsProfile is not nil
