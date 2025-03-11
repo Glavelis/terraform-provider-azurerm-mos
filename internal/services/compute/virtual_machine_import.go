@@ -57,11 +57,26 @@ func importVirtualMachine(osType virtualmachines.OperatingSystemTypes, resourceT
 
 		}
 
+		/* 		hasSshKeys := false
+		   		if osType == virtualmachines.OperatingSystemTypesLinux {
+		   			if linux := vm.Model.Properties.OsProfile.LinuxConfiguration; linux != nil {
+		   				if linux.Ssh != nil && linux.Ssh.PublicKeys != nil {
+		   					hasSshKeys = len(*linux.Ssh.PublicKeys) > 0
+		   				}
+		   			}
+		   		}
+
+		   		if !hasSshKeys {
+		   			d.Set("admin_password", "ignored-as-imported")
+		   		} */
+
 		hasSshKeys := false
 		if osType == virtualmachines.OperatingSystemTypesLinux {
-			if linux := vm.Model.Properties.OsProfile.LinuxConfiguration; linux != nil {
-				if linux.Ssh != nil && linux.Ssh.PublicKeys != nil {
-					hasSshKeys = len(*linux.Ssh.PublicKeys) > 0
+			if vm.Model.Properties.OsProfile != nil { // Ensure OsProfile is not nil
+				if linux := vm.Model.Properties.OsProfile.LinuxConfiguration; linux != nil {
+					if linux.Ssh != nil && linux.Ssh.PublicKeys != nil {
+						hasSshKeys = len(*linux.Ssh.PublicKeys) > 0
+					}
 				}
 			}
 		}
